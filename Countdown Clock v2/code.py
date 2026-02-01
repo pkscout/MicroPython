@@ -10,7 +10,6 @@ CIRCUITPY_WIFI_PASSWORD = "xxx"
 AIO_USERNAME = "xxx"
 AIO_KEY = "xxx"
 
-SWAP_DELAY = 10  #in seconds
 SCROLL_SPEED = 30  #between 1 and 100
 BRIGHTNESS = 80  #between 1 and 100
 
@@ -19,7 +18,7 @@ EVENT_MONTH = 5
 EVENT_DAY = 26
 EVENT_HOUR = 8 
 EVENT_MINUTE = 0
-EVENT_NAME = "EVENT NAME"  #must be no more than 4 characters
+EVENT_NAME = "NAME"  #must be no more than 4 characters
 EVENT_MSG = "HAPPY EVENT NAME * "  #can be as long as you want
 """
 
@@ -109,9 +108,13 @@ while True:
             days_remaining = remaining
             days_string = "% 3sD" % str(days_remaining)
             # pack the calculated times into a string to show
-            countdown_string = "%s%s" % (days_string, hours_string)
-        # show the event name then the countdown once
+            if days_remaining > 0:
+                countdown_string = "%s%s" % (days_string, hours_string)
+            else:
+                countdown_string = "%s%s" % (hours_string, mins_string)
+        # show the event name and countdown once
         display.print("% 4s%s" % (EVENT_NAME, countdown_string))
+        time.sleep(30)
     except Exception as e:  # pylint: disable=broad-except
         # any errors, reset MCU
         reset_on_error(10, e)
