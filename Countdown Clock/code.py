@@ -17,7 +17,7 @@ BRIGHTNESS = 80  #between 1 and 100
 EVENT_YEAR = 2026
 EVENT_MONTH = 5
 EVENT_DAY = 26
-EVENT_HOUR = 8
+EVENT_HOUR = 8 
 EVENT_MINUTE = 0
 EVENT_NAME = "EVENT NAME"  #must be no more than 12 characters
 EVENT_MSG = "HAPPY EVENT NAME * "  #can be as long as you want
@@ -32,7 +32,7 @@ import microcontroller
 import board
 import adafruit_requests
 from adafruit_ht16k33.segments import Seg14x4
-from adafruit_io.adafruit_io import IO_HTTP, AdafruitIO_RequestError # pylint: disable=unused-import
+from adafruit_io.adafruit_io import IO_HTTP, AdafruitIO_RequestError  # pylint: disable=unused-import
 
 EVENT_YEAR = os.getenv("EVENT_YEAR")
 EVENT_MONTH = os.getenv("EVENT_MONTH")
@@ -56,10 +56,11 @@ def reset_on_error(delay, error):
     print("Resetting microcontroller in %d seconds" % delay)
     time.sleep(delay)
     # microcontroller.reset()
-    
+
 
 try:
-    wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
+    wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"),
+                       os.getenv("CIRCUITPY_WIFI_PASSWORD"))
 except Exception as e:  # pylint: disable=broad-except
     # any errors, reset MCU
     reset_on_error(10, e)
@@ -89,7 +90,7 @@ while True:
             # scroll the event message on a loop
             display.marquee(EVENT_MSG, SCROLL_SPEED, loop=True)
         if remaining >= 86400000:
-            #if it's 1000 days or more the display can't show it correctly
+            # if it's 1000 days or more the display can't show it correctly
             countdown_string = "% 12s" % "FAR FUTURE"
         else:
             # calculate the seconds remaining
@@ -108,7 +109,8 @@ while True:
             days_remaining = remaining
             days_string = "% 3sD" % str(days_remaining)
             # pack the calculated times into a string to show
-            countdown_string = "%s%s%s" % (days_string, hours_string, mins_string)
+            countdown_string = "%s%s%s" % (
+                days_string, hours_string, mins_string)
         # show the event name then the countdown once
         display.print("% 12s" % EVENT_NAME)
         time.sleep(SWAP_DELAY)
